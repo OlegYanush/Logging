@@ -5,7 +5,7 @@
 
     public class Accordion : Control
     {
-        private static XElement ConfigurateAccordionTag(bool allowAllClosed = true, bool multiExpanded = true)
+        private static XElement ConfigurateAccordion(bool allowAllClosed = true, bool multiExpanded = true)
         {
             return new XElement("ul", new XAttribute("class", "accordion"),
                                       new XAttribute("data-accordion", string.Empty),
@@ -26,7 +26,7 @@
 
         public override XElement Build()
         {
-            var accordion = ConfigurateAccordionTag(allowAllClosed: AllowAllClosed, multiExpanded: MultiExpanded);
+            var accordion = ConfigurateAccordion(allowAllClosed: AllowAllClosed, multiExpanded: MultiExpanded);
             Items.ForEach(i => accordion.Add(i.Build()));
 
             return accordion;

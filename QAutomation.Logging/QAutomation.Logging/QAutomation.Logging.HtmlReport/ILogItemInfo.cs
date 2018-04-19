@@ -1,5 +1,6 @@
 ﻿namespace QAutomation.Logging.HtmlReport
 {
+    using QAutomation.Logging.HtmlReport.LogItemControls;
     using System;
 
     public interface ILogItemInfo
@@ -14,5 +15,7 @@
         string Error { get; }
 
         int GetCountOfLogsByLevel(LogLevel level);
+
+        LogItemControl ToControl();
     }
 }

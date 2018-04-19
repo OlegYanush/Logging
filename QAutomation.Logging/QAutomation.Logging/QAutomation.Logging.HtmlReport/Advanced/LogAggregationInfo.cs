@@ -1,9 +1,11 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Advanced
 {
+    using QAutomation.Logging.HtmlReport.LogItemControls;
     using QAutomation.Logging.LogItems;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xml.Linq;
 
     public class LogAggregationInfo : LogItemInfo<LogAggregation>
     {
@@ -12,7 +14,7 @@
         public LogAggregationInfo(LogAggregation item)
             : base(item)
         {
-            foreach(var logItem in item.LogItems)
+            foreach (var logItem in item.LogItems)
             {
                 if (logItem is LogMessage lm)
                     Items.Add(new LogMessageInfo(lm));
@@ -35,16 +37,15 @@
 
         public override AttachmentTypes GetAttachmentType() => throw new NotSupportedException();
 
-        public override int GetCountOfLogsByLevel(LogLevel level)
+        public override int GetCountOfLogsByLevel(LogLevel level) => Items.Sum(i => i.GetCountOfLogsByLevel(level));
+
+        public override LogItemControl ToControl() => new LogAggregationControl
         {
-            var count = 0;
-
-            foreach(var item in Items)
-            {
-                count += item.GetCountOfLogsByLevel(level);
-            }
-
-            return count;
-        }
+            Level = Level.ToString(),
+            Message = Message,
+            TimeStamp = TimeStamp,
+            Items = Items.Select(x => x.ToControl()).ToList(),
+            Slider = new Slider()
+        };
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Advanced
 {
+    using QAutomation.Logging.HtmlReport.LogItemControls;
     using QAutomation.Logging.LogItems;
 
     public class LogAttachmentInfo : LogItemInfo<LogAttacment>
@@ -14,5 +15,7 @@
 
         public override string GetAttachmentPath() => _logItem.FilePath;
         public override AttachmentTypes GetAttachmentType() => _logItem.Type;
+
+        public override LogItemControl ToControl() => null;
     }
 }

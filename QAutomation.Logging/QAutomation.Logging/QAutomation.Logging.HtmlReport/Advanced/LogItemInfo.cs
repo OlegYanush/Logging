@@ -1,6 +1,8 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Advanced
 {
+    using QAutomation.Logging.HtmlReport.LogItemControls;
     using System;
+    using System.Xml.Linq;
 
     public abstract class LogItemInfo<T> : ILogItemInfo where T : LogItem
     {
@@ -21,5 +23,7 @@
 
         public abstract string GetAttachmentPath();
         public abstract AttachmentTypes GetAttachmentType();
+
+        public abstract LogItemControl ToControl();
     }
 }

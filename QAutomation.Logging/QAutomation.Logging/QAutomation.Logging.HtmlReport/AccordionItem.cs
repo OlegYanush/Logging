@@ -23,7 +23,7 @@
                                        new XElement(wrappedControl.Build()));
         }
 
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
         public Control Title { get; set; }
         public Control Content { get; set; }
 
@@ -31,7 +31,7 @@
         {
             Title = title;
             Content = content;
-            Active = active;
+            IsActive = active;
         }
 
         public override XElement Build()
@@ -39,7 +39,7 @@
             var title = ConfigurateItemTitle(Title);
             var content = ConfigurateItemContent(Content);
 
-            return ConfigurateItem(title, content, Active);
+            return ConfigurateItem(title, content, IsActive);
         }
     }
 }

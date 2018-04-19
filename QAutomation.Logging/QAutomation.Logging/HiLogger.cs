@@ -46,7 +46,7 @@
         public ILogger INFO(string message, Exception exception = null) => LOG(LogLevel.INFO, message, exception);
 
         public ILogger WARN(string message, Exception exception = null) => LOG(LogLevel.WARN, message, exception);
-
+      
         public ILogger INNER(string message, bool permitCreateInnerLoggers = false)
         {
             if (_allInnerLoggersAsInfo)

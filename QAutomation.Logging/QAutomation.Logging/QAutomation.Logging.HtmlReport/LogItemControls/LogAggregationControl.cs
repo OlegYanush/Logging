@@ -1,32 +1,46 @@
 ﻿namespace QAutomation.Logging.HtmlReport.LogItemControls
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.Linq;
 
     public class LogAggregationControl : LogItemControl
     {
+        private static XElement ConfigurateCell() => new XElement("div", new XAttribute("class", "cell log-aggregation"), string.Empty);
+        private static XElement ConfigurateContainer() => new XElement("div", new XAttribute("class", "grid-x grid-margin-x"));
+
+        public Control Slider { get; set; }
         public List<LogItemControl> Items { get; set; }
+
+        public override bool HasError => Items.Any(i => i.HasError);
 
         public override XElement Build()
         {
-            var callout = base.Build();
+            bool hasSimpleLogItems = false;
+
+            var container = ConfigurateContainer();
+            var cell = ConfigurateCell();
+
+            container.Add(cell);
+
             var accordion = new Accordion();
 
             Items.ForEach(x =>
             {
                 if (x is LogAggregationControl)
-                    accordion.Items.Add(new AccordionItem(new ParagraphControl { Text = x.Message }, x));
+                    accordion.Items.Add(new AccordionItem(new ParagraphControl { Text = x.Message }, x, HasError));
                 else
+                {
                     accordion.Items.Add(x);
+                    hasSimpleLogItems = true;
+                }
             });
 
-            callout.Add(accordion.Build());
+            if (hasSimpleLogItems)
+                cell.Add(Slider.Build());
 
-            return accordion.Build();
+            cell.Add(accordion.Build());
+            return container;
         }
     }
 }

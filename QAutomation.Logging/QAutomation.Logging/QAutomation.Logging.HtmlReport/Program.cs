@@ -9,6 +9,7 @@
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Linq;
 
@@ -16,6 +17,7 @@
     {
         static void Main(string[] args)
         {
+
             var formatter = new BinaryFormatter();
             HiLogger logger = null;
 
@@ -24,49 +26,41 @@
                 logger = (HiLogger)formatter.Deserialize(stream);
             }
 
+            //var count = info.GetCountOfLogsByLevel(LogLevel.TRACE);
+
+            //logger = new HiLogger("Tests.TagsExporting.InabilityToExportDefaultTags.SAP1DX_3687");
+
+            //var inner = logger.INNER("Create page");
+            //inner.DEBUG("Start to cteate page.");
+            //inner.DEBUG("Page successfully created");
+
+            //var subinner = inner.INNER("create sub page");
+            //subinner.INFO("create very sub inner page");
+
+            //subinner.ERROR("test failed", new NotSupportedException("Not supperoted"));
             var info = new LogAggregationInfo(logger.Aggregation);
 
-            var count = info.GetCountOfLogsByLevel(LogLevel.TRACE);
+            //var control = logger.Aggregation.ToControl();
 
-            logger = new HiLogger("Tests.TagsExporting.InabilityToExportDefaultTags.SAP1DX_3687");
+            //var xml = control.Build();
 
-            var inner = logger.INNER("Create page");
-            inner.DEBUG("Start to cteate page.");
-            inner.DEBUG("Page successfully created");
+            //var xml = info.ToControl().Build();
 
-            var subinner = inner.INNER("create sub page");
-            subinner.INFO("create very sub inner page");
+            var document = new XDocument();
 
-            logger.ERROR("test failed", new NotSupportedException("Not supperoted"));
+            var head = new Head() { Title = logger.Name.Split('.').Last() };
+            var body = new Body();
 
-            var control = logger.Aggregation.ToControl();
+            body.Add(info.ToControl());
 
-            var xml = control.Build();
-        }
-    }
+            body.Add(new Script("src/js/jquery.js"));
+            body.Add(new Script("src/js/foundation.min.js"));
+            body.Add(new Script("src/js/app.js"));
 
-    public static class LogItemExtensions
-    {
-        public static LogItemControl ToControl(this LogItem item)
-        {
-            if (item is LogMessage logMessage)
-                return new LogErrorControl
-                {
-                    Error = logMessage.Error?.ToString(),
-                    Level = logMessage.Level.ToString(),
-                    Message = logMessage.Message,
-                    TimeStamp = logMessage.DateTimeStamp
-                };
-            if (item is LogAggregation logAggregation)
-                return new LogAggregationControl
-                {
-                    Message = logAggregation.Message,
-                    Level = logAggregation.Level.ToString(),
-                    TimeStamp = logAggregation.DateTimeStamp,
-                    Items = logAggregation.LogItems.Select(x => x.ToControl()).ToList()
-                };
+            var html = new Html(head, body);
+            document.Add(html.Build());
 
-            throw new Exception("Not found.");
+            document.Save("index.html");
         }
     }
 }
