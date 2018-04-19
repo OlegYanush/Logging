@@ -46,13 +46,17 @@
     <Compile Include="AccordionItem.cs" />
     <Compile Include="Advanced\LogAggregationInfo.cs" />
     <Compile Include="Advanced\LogAttachmentInfo.cs" />
+    <Compile Include="Advanced\LogAttachmentInfo1.cs" />
     <Compile Include="Advanced\LogItemInfo.cs" />
+    <Compile Include="Advanced\LogItemInfo1.cs" />
     <Compile Include="Advanced\LogMessageInfo.cs" />
+    <Compile Include="Advanced\LogMessageInfo1.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Head.cs" />
     <Compile Include="Html.cs" />
     <Compile Include="ILogItemInfo.cs" />
+    <Compile Include="Advanced\LogAggregationInfo1.cs" />
     <Compile Include="LogItemControls\LogAggregationControl.cs" />
     <Compile Include="LogItemControls\LogItemControl.cs" />
     <Compile Include="ParagraphControl.cs" />

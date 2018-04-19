@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileTypes.cs" />
+    <Compile Include="AttachmentTypes.cs" />
     <Compile Include="HiLogger.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="LogItems\LogAggregation.cs" />
