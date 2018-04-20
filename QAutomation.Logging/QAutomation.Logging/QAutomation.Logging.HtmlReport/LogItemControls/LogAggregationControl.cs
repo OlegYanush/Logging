@@ -1,7 +1,7 @@
 ﻿namespace QAutomation.Logging.HtmlReport.LogItemControls
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Xml.Linq;
 
     public class LogAggregationControl : LogItemControl
@@ -9,35 +9,40 @@
         private static XElement ConfigurateCell() => new XElement("div", new XAttribute("class", "cell log-aggregation"), string.Empty);
         private static XElement ConfigurateContainer() => new XElement("div", new XAttribute("class", "grid-x grid-margin-x"));
 
-        public Control Slider { get; set; }
-        public List<LogItemControl> Items { get; set; }
+        protected List<LogItemControl> _children { get; set; }
 
-        public override bool HasError => Items.Any(i => i.HasError);
+        protected readonly string _message;
+        protected readonly bool _hasError;
+        protected readonly bool _hasSimpleLogItems;
+
+        public LogAggregationControl(string level, DateTime timeStamp, string message, bool hasError, bool hasSimpleLogItems, IEnumerable<LogItemControl> children)
+            : base(level, timeStamp)
+        {
+            _message = message;
+            _hasError = hasError;
+
+            _hasSimpleLogItems = hasSimpleLogItems;
+            _children = new List<LogItemControl>(children);
+        }
 
         public override XElement Build()
         {
-            bool hasSimpleLogItems = false;
-
             var container = ConfigurateContainer();
             var cell = ConfigurateCell();
 
             container.Add(cell);
-
             var accordion = new Accordion();
 
-            Items.ForEach(x =>
+            _children.ForEach(x =>
             {
-                if (x is LogAggregationControl)
-                    accordion.Items.Add(new AccordionItem(new ParagraphControl { Text = x.Message }, x, HasError));
+                if (x is LogAggregationControl lac)
+                    accordion.Items.Add(new AccordionItem(new ParagraphControl { Text = lac._message }, lac, lac._hasError));
                 else
-                {
                     accordion.Items.Add(x);
-                    hasSimpleLogItems = true;
-                }
             });
 
-            if (hasSimpleLogItems)
-                cell.Add(Slider.Build());
+            if (_hasSimpleLogItems)
+                cell.Add(new Slider().Build());
 
             cell.Add(accordion.Build());
             return container;

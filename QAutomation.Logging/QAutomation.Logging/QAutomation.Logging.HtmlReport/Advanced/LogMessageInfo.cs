@@ -1,29 +1,31 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Advanced
 {
-    using System;
     using QAutomation.Logging.HtmlReport.LogItemControls;
     using QAutomation.Logging.LogItems;
 
-    public class LogMessageInfo : LogItemInfo<LogMessage>
+    public class LogMessageInfo : LogItemInfo
     {
-        public LogMessageInfo(LogMessage item) : base(item) { }
+        private LogMessage _message;
 
-        public override string Message => _logItem.Message;
+        public string Message { get; set; }
+        public string Error { get; set; }
 
-        public override bool IsAttachment => false;
-        public override bool IsFinite => true;
-
-        public override string GetAttachmentPath() => null;
-        public override AttachmentTypes GetAttachmentType() => throw new NotSupportedException();
-
-        public override LogItemControl ToControl() => new LogItemControl()
+        public LogMessageInfo(LogMessage message)
         {
-            Error = Error,
-            Level = Level.ToString(),
-            Message = Message,
-            TimeStamp = TimeStamp
-        };
+            _message = message;
 
-        public override string Error => _logItem.Error?.ToString();
+            Message = _message.Message;
+            Error = message.Error?.ToString();
+
+            TimeStamp = _message.DateTimeStamp;
+            Level = _message.Level;
+
+            WithAttachment = false;
+            HasError = Error != null;
+        }
+
+        public override int GetCountOfLogsByLevel(LogLevel level) => Level == level ? 1 : 0;
+
+        public override LogItemControl ToControl() => new LogMessageControl(Level.ToString(), TimeStamp, Message, Error);
     }
 }

@@ -3,19 +3,30 @@
     using QAutomation.Logging.HtmlReport.LogItemControls;
     using QAutomation.Logging.LogItems;
 
-    public class LogAttachmentInfo : LogItemInfo<LogAttacment>
+    public class LogAttachmentInfo : LogItemInfo
     {
-        public LogAttachmentInfo(LogAttacment logFile) : base(logFile) { }
+        private LogAttachment _attachment;
 
-        public override bool IsAttachment => true;
-        public override bool IsFinite => true;
+        public string Message { get; protected set; }
 
-        public override string Message => null;
-        public override string Error => null;
+        public LogAttachmentInfo(LogAttachment attachment)
+        {
+            _attachment = attachment;
 
-        public override string GetAttachmentPath() => _logItem.FilePath;
-        public override AttachmentTypes GetAttachmentType() => _logItem.Type;
+            AttachmentType = _attachment.Type;
+            PathToAttachment = _attachment.FilePath.Substring(_attachment.FilePath.IndexOf("Screenshot"));
 
-        public override LogItemControl ToControl() => null;
+            WithAttachment = true;
+            Message = _attachment.Message;
+
+            Level = _attachment.Level;
+            TimeStamp = _attachment.DateTimeStamp;
+
+            HasError = Level == LogLevel.ERROR;
+        }
+
+        public override int GetCountOfLogsByLevel(LogLevel level) => Level == level ? 1 : 0;
+
+        public override LogItemControl ToControl() => new LogImageControl(Level.ToString(), TimeStamp, Message, PathToAttachment);
     }
 }

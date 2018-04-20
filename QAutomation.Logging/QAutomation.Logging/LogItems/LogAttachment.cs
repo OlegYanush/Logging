@@ -9,6 +9,8 @@
     [Serializable]
     public class LogAttacment : LogItem
     {
+        public string Message { get; set; }
+
         public AttachmentTypes Type { get; set; }
         public string FilePath { get; set; }
     }

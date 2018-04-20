@@ -2,28 +2,21 @@
 {
     using QAutomation.Logging.HtmlReport.LogItemControls;
     using System;
-    using System.Xml.Linq;
 
-    public abstract class LogItemInfo<T> : ILogItemInfo where T : LogItem
+    public abstract class LogItemInfo
     {
-        protected T _logItem;
+        public bool WithAttachment { get; protected set; }
 
-        protected LogItemInfo(T item) { _logItem = item; }
+        public DateTime TimeStamp { get; protected set; }
+        public LogLevel Level { get; protected set; }
 
-        public LogLevel Level => _logItem.Level;
-        public DateTime TimeStamp => _logItem.DateTimeStamp;
+        public bool HasError { get; protected set; }
+        public bool HasSimpleLogItems { get; protected set; }
 
-        public abstract bool IsAttachment { get; }
-        public abstract bool IsFinite { get; }
+        public string PathToAttachment { get; protected set; }
+        public AttachmentTypes AttachmentType { get; protected set; }
 
-        public abstract string Message { get; }
-        public abstract string Error { get; }
-
-        public virtual int GetCountOfLogsByLevel(LogLevel level) => Level == level ? 1 : 0;
-
-        public abstract string GetAttachmentPath();
-        public abstract AttachmentTypes GetAttachmentType();
-
+        public abstract int GetCountOfLogsByLevel(LogLevel level);
         public abstract LogItemControl ToControl();
     }
 }

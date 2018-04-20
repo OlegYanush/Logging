@@ -3,33 +3,19 @@
     using System;
     using System.Xml.Linq;
 
-    public class LogItemControl : Control
+    public abstract class LogItemControl : Control
     {
-        private static XElement ConfigurateLogItemControl(string level) => new XElement("div", new XAttribute("class", $"log-item level-{(level == "ERROR" ? $"{level}" : level)}"));
-        private static XElement ConfigurateParagraph(string message, DateTime timeStamp, string error = null)
+        protected static XElement ConfigurateLogItemControl(string level) => new XElement("div", new XAttribute("class", $"log-item level-{(level == "ERROR" ? $"{level}" : level)}"));
+
+        protected LogItemControl(string level, DateTime timeStamp)
         {
-            var paragraph = new XElement("p", $"{timeStamp} | {message}");
-
-            if (error != null)
-                paragraph.Add(new XElement("pre", error));
-
-            return paragraph;
+            _level = level;
+            _timeStamp = timeStamp;
         }
 
-        public string Level { get; set; }
-        public DateTime TimeStamp { get; set; }
+        protected string _level;
+        protected DateTime _timeStamp;
 
-        public string Message { get; set; }
-        public string Error { get; set; }
-
-        public virtual bool HasError => Error != null;
-
-        public override XElement Build()
-        {
-            var logItem = ConfigurateLogItemControl(Level);
-            logItem.Add(ConfigurateParagraph(Message, TimeStamp, Error));
-
-            return logItem;
-        }
+        public override XElement Build() => ConfigurateLogItemControl(_level);
     }
 }

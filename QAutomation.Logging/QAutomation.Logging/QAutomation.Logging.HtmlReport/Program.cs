@@ -21,7 +21,7 @@
             var formatter = new BinaryFormatter();
             HiLogger logger = null;
 
-            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\Logs\Logs\Tests.TagsExporting.InabilityToExportDefaultTags.SAP1DX_3687.log.bin", FileMode.Open))
+            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\1\Tests.DevDest.ForgetMe.ForgetMeTests(IE).Pr00011.log.bin", FileMode.Open))
             {
                 logger = (HiLogger)formatter.Deserialize(stream);
             }

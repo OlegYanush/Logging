@@ -1,51 +1,58 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Advanced
 {
-    using QAutomation.Logging.HtmlReport.LogItemControls;
-    using QAutomation.Logging.LogItems;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xml.Linq;
+    using QAutomation.Logging.HtmlReport.LogItemControls;
+    using QAutomation.Logging.LogItems;
 
-    public class LogAggregationInfo : LogItemInfo<LogAggregation>
+    public class LogAggregationInfo : LogItemInfo
     {
-        public readonly List<ILogItemInfo> Items = new List<ILogItemInfo>();
+        private LogAggregation _aggregation;
 
-        public LogAggregationInfo(LogAggregation item)
-            : base(item)
+        private readonly List<LogItemInfo> _children = new List<LogItemInfo>();
+
+        public string Message { get; set; }
+
+        public LogAggregationInfo(LogAggregation aggregation)
         {
-            foreach (var logItem in item.LogItems)
-            {
-                if (logItem is LogMessage lm)
-                    Items.Add(new LogMessageInfo(lm));
+            _aggregation = aggregation;
 
-                else if (logItem is LogAttacment lf)
-                    Items.Add(new LogAttachmentInfo(lf));
+            Message = _aggregation.Message;
+            Level = _aggregation.Level;
+            TimeStamp = _aggregation.DateTimeStamp;
 
-                else if (logItem is LogAggregation la)
-                    Items.Add(new LogAggregationInfo(la));
-            }
+            WithAttachment = false;
+            AttachmentType = AttachmentTypes.None;
+
+            _aggregation.LogItems.ForEach(i => _children.Add(i.ToInfo()));
+
+            HasError = _children.Any(i => i.HasError);
+            HasSimpleLogItems = _children.Any(i => !(i is LogAggregationInfo));
         }
 
-        public override bool IsAttachment => false;
-        public override bool IsFinite => false;
+        public override int GetCountOfLogsByLevel(LogLevel level) => _children.Sum(i => i.GetCountOfLogsByLevel(level));
 
-        public override string Message => _logItem.Message;
-        public override string Error => null;
+        public override LogItemControl ToControl() 
+            => new LogAggregationControl(Level.ToString(), TimeStamp, Message, HasError, HasSimpleLogItems, _children.Select(i => i.ToControl()));
+    }
 
-        public override string GetAttachmentPath() => null;
-
-        public override AttachmentTypes GetAttachmentType() => throw new NotSupportedException();
-
-        public override int GetCountOfLogsByLevel(LogLevel level) => Items.Sum(i => i.GetCountOfLogsByLevel(level));
-
-        public override LogItemControl ToControl() => new LogAggregationControl
+    public static class LogItemExtension
+    {
+        public static LogItemInfo ToInfo(this LogItem item)
         {
-            Level = Level.ToString(),
-            Message = Message,
-            TimeStamp = TimeStamp,
-            Items = Items.Select(x => x.ToControl()).ToList(),
-            Slider = new Slider()
-        };
+            switch (item)
+            {
+                case LogAggregation aggregation:
+                    return new LogAggregationInfo(aggregation);
+                case LogMessage message:
+                    return new LogMessageInfo(message);
+                case LogAttachment attacment:
+                    return new LogAttachmentInfo(attacment);
+
+                default:
+                    throw new Exception($"Unknown type log item type '{item.GetType().Name}'.");
+            }
+        }
     }
 }
