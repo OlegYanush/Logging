@@ -1,7 +1,7 @@
 ﻿namespace QAutomation.Logging.HtmlReport
 {
-    using QAutomation.Logging.HtmlReport.Advanced;
-    using QAutomation.Logging.HtmlReport.LogItemControls;
+    using QAutomation.Logging.HtmlReport.Info;
+    using QAutomation.Logging.HtmlReport.Controls;
     using QAutomation.Logging.LogItems;
     using System;
     using System.Collections.Generic;
@@ -19,11 +19,11 @@
         {
 
             var formatter = new BinaryFormatter();
-            HiLogger logger = null;
+            LogAggregation aggreagation = null;
 
-            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\1\Tests.DevDest.ForgetMe.ForgetMeTests(IE).Pr00011.log.bin", FileMode.Open))
+            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log (1)\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log.bin", FileMode.Open))
             {
-                logger = (HiLogger)formatter.Deserialize(stream);
+                aggreagation = (LogAggregation)formatter.Deserialize(stream);
             }
 
             //var count = info.GetCountOfLogsByLevel(LogLevel.TRACE);
@@ -38,7 +38,7 @@
             //subinner.INFO("create very sub inner page");
 
             //subinner.ERROR("test failed", new NotSupportedException("Not supperoted"));
-            var info = new LogAggregationInfo(logger.Aggregation);
+            var info = new LogTestAggregationInfo(aggreagation as LogTestAggregation);
 
             //var control = logger.Aggregation.ToControl();
 
@@ -46,21 +46,7 @@
 
             //var xml = info.ToControl().Build();
 
-            var document = new XDocument();
-
-            var head = new Head() { Title = logger.Name.Split('.').Last() };
-            var body = new Body();
-
-            body.Add(info.ToControl());
-
-            body.Add(new Script("src/js/jquery.js"));
-            body.Add(new Script("src/js/foundation.min.js"));
-            body.Add(new Script("src/js/app.js"));
-
-            var html = new Html(head, body);
-            document.Add(html.Build());
-
-            document.Save("index.html");
+            new Document(info).Build();
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.Xml.Linq;
 
-    public class AccordionItem : Control
+    public class AccordionItemControl : Control
     {
         private static XElement ConfigurateItem(XElement title, XElement content, bool active = false)
         {
@@ -27,7 +27,7 @@
         public Control Title { get; set; }
         public Control Content { get; set; }
 
-        public AccordionItem(Control title, Control content, bool active = false)
+        public AccordionItemControl(Control title, Control content, bool active = false)
         {
             Title = title;
             Content = content;

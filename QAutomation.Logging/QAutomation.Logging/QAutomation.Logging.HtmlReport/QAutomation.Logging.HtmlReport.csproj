@@ -46,26 +46,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accordion.cs" />
-    <Compile Include="AccordionItem.cs" />
-    <Compile Include="Advanced\LogAttachmentInfo.cs" />
-    <Compile Include="Advanced\LogItemInfo.cs" />
-    <Compile Include="Advanced\LogMessageInfo.cs" />
-    <Compile Include="Body.cs" />
+    <Compile Include="Controls\AccordionControl.cs" />
+    <Compile Include="Controls\AccordionItemControl.cs" />
+    <Compile Include="HtmlReportGenerator.cs" />
+    <Compile Include="Info\LogAttachmentInfo.cs" />
+    <Compile Include="Info\LogItemInfo.cs" />
+    <Compile Include="Info\LogMessageInfo.cs" />
+    <Compile Include="Info\LogTestAggregationInfo.cs" />
+    <Compile Include="Sections\Body.cs" />
     <Compile Include="Control.cs" />
-    <Compile Include="Head.cs" />
-    <Compile Include="Html.cs" />
-    <Compile Include="ILogItemInfo.cs" />
-    <Compile Include="Advanced\LogAggregationInfo.cs" />
-    <Compile Include="LogItemControls\LogAggregationControl.cs" />
-    <Compile Include="LogItemControls\LogImageControl.cs" />
-    <Compile Include="LogItemControls\LogItemControl.cs" />
-    <Compile Include="LogItemControls\LogMessageControl.cs" />
-    <Compile Include="ParagraphControl.cs" />
+    <Compile Include="Sections\Css.cs" />
+    <Compile Include="Sections\Div.cs" />
+    <Compile Include="Sections\Document.cs" />
+    <Compile Include="Sections\Head.cs" />
+    <Compile Include="Sections\Html.cs" />
+    <Compile Include="Info\LogAggregationInfo.cs" />
+    <Compile Include="Controls\LogItems\LogAggregationControl.cs" />
+    <Compile Include="Controls\LogItems\LogImageControl.cs" />
+    <Compile Include="Controls\LogItems\LogItemControl.cs" />
+    <Compile Include="Controls\LogItems\LogMessageControl.cs" />
+    <Compile Include="Controls\LogItems\LogTestAggregationControl.cs" />
+    <Compile Include="Sections\Paragraph.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Script.cs" />
-    <Compile Include="Slider.cs" />
+    <Compile Include="Sections\Script.cs" />
+    <Compile Include="Controls\SliderControl.cs" />
+    <Compile Include="Sections\Title.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -89,8 +95,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Desktop\QAutomation.Logging\QAutomation.Logging\QAutomation.Logging.csproj">
-      <Project>{b58f831b-362b-4d5d-9a83-2de876ead65a}</Project>
+    <ProjectReference Include="..\..\..\..\..\..\Desktop\QAutomation.Logging %281%29\QAutomation.Logging\QAutomation.Logging.csproj">
+      <Project>{B58F831B-362B-4D5D-9A83-2DE876EAD65A}</Project>
       <Name>QAutomation.Logging</Name>
     </ProjectReference>
   </ItemGroup>
