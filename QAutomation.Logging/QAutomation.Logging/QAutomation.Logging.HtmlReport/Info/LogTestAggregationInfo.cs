@@ -1,8 +1,8 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Info
 {
     using System;
-    using QAutomation.Logging.HtmlReport.Controls;
-    using QAutomation.Logging.LogItems;
+    using Controls;
+    using LogItems;
 
     public class LogTestAggregationInfo : LogAggregationInfo
     {

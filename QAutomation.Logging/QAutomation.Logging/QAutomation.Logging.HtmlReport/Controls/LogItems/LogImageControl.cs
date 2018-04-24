@@ -1,6 +1,6 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Controls
 {
-    using QAutomation.Logging.HtmlReport.Info;
+    using Info;
     using System;
     using System.Xml.Linq;
 

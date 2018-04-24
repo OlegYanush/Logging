@@ -3,15 +3,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using QAutomation.Logging.HtmlReport.Controls;
-    using QAutomation.Logging.LogItems;
+    using Controls;
+    using LogItems;
 
     public class LogAggregationInfo : LogItemInfo
     {
         private LogAggregation _aggregation;
 
         public string Message => _aggregation.Message;
-        public readonly List<LogItemInfo> Children = new List<LogItemInfo>();
+        public readonly List<LogItemInfo> Children  = new List<LogItemInfo>();
 
         public override bool HasError => Children.Any(i => i.HasError);
         public bool HasSimpleLogItems => Children.Any(i => !(i is LogAggregationInfo));

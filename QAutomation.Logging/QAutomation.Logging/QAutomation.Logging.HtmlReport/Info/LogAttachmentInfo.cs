@@ -1,10 +1,13 @@
 ﻿namespace QAutomation.Logging.HtmlReport.Info
 {
-    using QAutomation.Logging.HtmlReport.Controls;
-    using QAutomation.Logging.LogItems;
+    using Controls;
+    using LogItems;
+    using System.IO;
 
     public class LogAttachmentInfo : LogItemInfo
     {
+        public static string RootDirectory;
+
         private LogAttachment _attachment;
 
         public string Message => _attachment.Message;
@@ -13,17 +16,24 @@
         private string _pathToAttachment;
         public string PathToAttachment
         {
-            get => _pathToAttachment;
-            set => _pathToAttachment = _attachment.FilePath.Substring(_attachment.FilePath.IndexOf(_attachment.GetFolder()));
+            get
+            {
+                if(_pathToAttachment == null)
+                {
+                    var value = _attachment.FilePath;
+                    _pathToAttachment = Path.Combine(RootDirectory, value.Substring(value.IndexOf(_attachment.GetFolder()) + _attachment.GetFolder().Length + 1));
+                }
+
+                return _pathToAttachment;
+            }
         }
 
         public override bool HasError => Level == LogLevel.ERROR;
-       
+
         public LogAttachmentInfo(LogAttachment attachment)
             : base(attachment.Level, attachment.TimeStamp, true)
         {
             _attachment = attachment;
-            PathToAttachment = _attachment.FilePath;
         }
 
         public override int GetCountOfLogsByLevel(LogLevel level) => Level == level ? 1 : 0;

@@ -72,6 +72,7 @@
     <Compile Include="Sections\Script.cs" />
     <Compile Include="Controls\SliderControl.cs" />
     <Compile Include="Sections\Title.cs" />
+    <Compile Include="Tab.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

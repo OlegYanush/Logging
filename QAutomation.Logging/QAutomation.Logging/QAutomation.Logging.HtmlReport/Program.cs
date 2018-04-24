@@ -19,34 +19,22 @@
         {
 
             var formatter = new BinaryFormatter();
-            LogAggregation aggreagation = null;
+            LogTestAggregation aggreagation = null;
 
-            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log (1)\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log.bin", FileMode.Open))
+            using (var stream = new FileStream(@"C:\Users\Aleh_Yanushkevich\Desktop\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log (1)\Logs\Tests.DevDest.ForgetMe.ForgetMeTests(Chrome).Pr00011.log.bin", FileMode.Open))
             {
-                aggreagation = (LogAggregation)formatter.Deserialize(stream);
+                aggreagation = (LogTestAggregation)formatter.Deserialize(stream);
             }
 
-            //var count = info.GetCountOfLogsByLevel(LogLevel.TRACE);
+            var root = @"C:\Users\Aleh_Yanushkevich\Desktop\test";
 
-            //logger = new HiLogger("Tests.TagsExporting.InabilityToExportDefaultTags.SAP1DX_3687");
+            var generator = new HtmlReportGenerator(root);
 
-            //var inner = logger.INNER("Create page");
-            //inner.DEBUG("Start to cteate page.");
-            //inner.DEBUG("Page successfully created");
+            generator.GenerateReport(Directory.GetCurrentDirectory());
+            //generator.MagicFunction(root, "Logs", aggreagation.Items.OfType<LogAttachment>().ToList());
 
-            //var subinner = inner.INNER("create sub page");
-            //subinner.INFO("create very sub inner page");
-
-            //subinner.ERROR("test failed", new NotSupportedException("Not supperoted"));
-            var info = new LogTestAggregationInfo(aggreagation as LogTestAggregation);
-
-            //var control = logger.Aggregation.ToControl();
-
-            //var xml = control.Build();
-
-            //var xml = info.ToControl().Build();
-
-            new Document(info).Build();
+            //var info = new LogTestAggregationInfo(aggreagation);
+            //new Document(info).Build();
         }
     }
 }
